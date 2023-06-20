@@ -1,4 +1,5 @@
-from drf_spectacular.utils import OpenApiResponse, extend_schema, extend_schema_view
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiResponse, extend_schema, extend_schema_view, OpenApiParameter
 from rest_framework import status
 from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.permissions import AllowAny
@@ -37,13 +38,16 @@ class RefreshForecastAPIView(GenericAPIView):
         return Response(status=status.HTTP_200_OK)
 
 
-class CheckForecastRefreshStatusAPIView(ListAPIView):
+class CheckForecastRefreshStatusAPIView(GenericAPIView):
     serializer_class = forecast_serializers.ForecastCheckStatusSerializer
     permission_classes = [AllowAny]
 
     @extend_schema(
         summary="Check forecast refresh status",
         tags=["Forecast"],
+        parameters=[
+            OpenApiParameter("task_id", OpenApiTypes.UUID, OpenApiParameter.PATH, description="Task UUID"),
+        ],
         responses={status.HTTP_200_OK: forecast_serializers.ForecastCheckStatusResponseSerializer},
     )
     def get(self, request, *args, **kwargs):
