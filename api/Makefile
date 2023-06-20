@@ -1,7 +1,7 @@
 .ONESHELL:
 
 install:
-	poetry install --with dev --no-root
+	poetry install
 
 lock:
 	poetry lock

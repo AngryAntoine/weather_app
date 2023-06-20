@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     "rest_framework",
     # First-party apps
     "weather_app.apps.common",
-    "weather_app.apps.accounts",
     "weather_app.apps.forecast",
 ] + env.list("WEATHER_APP_DEV_INSTALLED_APPS", default=[])
 
@@ -71,8 +70,6 @@ WSGI_APPLICATION = "weather_app.wsgi.application"
 DATABASES = {
     "default": env.db("WEATHER_APP_DATABASE_URL"),
 }
-
-AUTH_USER_MODEL = "accounts.UserAccount"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -136,7 +133,6 @@ if STATICFILES_STORAGE_BACKEND == "storages.backends.s3boto3.S3StaticStorage":
         "endpoint_url": env.str("WEATHER_APP_DEFAULT_FILE_STORAGE_ENDPOINT_URL"),
         "custom_domain": env.str("WEATHER_APP_DEFAULT_FILE_STORAGE_CUSTOM_DOMAIN"),
         "url_protocol": env.str("WEATHER_APP_DEFAULT_FILE_STORAGE_URL_PROTOCOL", default="https:"),
-
         "location": env.str("WEATHER_APP_STATICFILES_STORAGE_LOCATION", default="s"),
         "file_overwrite": env.bool("WEATHER_APP_STATICFILES_STORAGE_FILE_OVERWRITE", default=True),
     }
@@ -150,7 +146,7 @@ STORAGES = {
     "staticfiles": {
         "BACKEND": STATICFILES_STORAGE_BACKEND,
         "OPTIONS": STATICFILES_STORAGE_OPTIONS,
-    }
+    },
 }
 
 EMAIL_BACKEND = env.str(
@@ -174,3 +170,8 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 APPEND_SLASH = False
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+WEATHER_URL = {
+    "meta_weather": "https://pogoda.meta.ua/ua",
+}

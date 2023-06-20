@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib import admin
-from django.urls import include, path, re_path
+from django.urls import include, path
 
 
 PLATFORM_PREFIX = "_platform"
@@ -9,13 +9,9 @@ DOCS_PREFIX = "docs"
 
 api_v1_urlpatterns = [
     path(
-        f"{API_PREFIX}/v1/accounts/",
-        include(("weather_app.apps.accounts.api.v1.urls", "accounts"), namespace="api-v1-accounts"),
-    ),
-    path(
-        f"{API_PREFIX}/v1/forecast/",
+        f"{API_PREFIX}/v1/forecasts/",
         include(("weather_app.apps.forecast.api.v1.urls", "forecast"), namespace="api-v1-forecast"),
-    )
+    ),
 ]
 
 urlpatterns = [

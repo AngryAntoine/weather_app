@@ -11,7 +11,6 @@ packages = [{include = "weather_app"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 Celery = "*"
-celery = "*"
 Django = "*"
 django-environ = "*"
 django-filter = "*"
@@ -23,6 +22,8 @@ redis = "*"
 sentry-sdk = "*"
 django-storages = "*"
 boto3 = "^1.26"
+beautifulsoup4 = "*"
+requests = "*"
 
 [tool.poetry.dev-dependencies]
 Pygments = "*"
