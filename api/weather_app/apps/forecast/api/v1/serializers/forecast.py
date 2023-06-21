@@ -8,7 +8,7 @@ from weather_app.apps.forecast import models as forecast_models
 class ForecastSerializer(serializers.ModelSerializer):
     class Meta:
         model = forecast_models.Forecast
-        fields = ("date", "temperature", "description", "task_id")
+        fields = ("date", "temperature", "description", "task_id", "updated")
 
 
 class RefreshForecastSerializer(common_serializers.CoreSerializer):

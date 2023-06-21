@@ -15,14 +15,20 @@ from weather_app.celery import celery_app as app
     get=extend_schema(summary="Forecast list", tags=["Forecast"]),
 )
 class ForecastListAPIView(ListAPIView):
+    """
+    API endpoint that retrieves a list of forecasts.
+    """
     serializer_class = forecast_serializers.ForecastSerializer
     permission_classes = [AllowAny]
 
     def get_queryset(self):
-        return forecast_selectors.get_all_forecasts()
+        return forecast_selectors.get_all_forecasts().order_by("date")
 
 
 class RefreshForecastAPIView(GenericAPIView):
+    """
+    API endpoint that triggers a manual forecast refresh.
+    """
     serializer_class = forecast_serializers.RefreshForecastSerializer
     permission_classes = [AllowAny]
 
@@ -33,12 +39,15 @@ class RefreshForecastAPIView(GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        period = int(serializer.validated_data.get("period", 5))
+        period = int(serializer.validated_data.get("period", 6))
         forecast_tasks.get_weather_forecast.delay(period=period)
         return Response(status=status.HTTP_200_OK)
 
 
 class CheckForecastRefreshStatusAPIView(GenericAPIView):
+    """
+    API endpoint that checks the status of a forecast refresh task by its UUID.
+    """
     serializer_class = forecast_serializers.ForecastCheckStatusSerializer
     permission_classes = [AllowAny]
 

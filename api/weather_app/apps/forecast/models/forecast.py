@@ -17,7 +17,9 @@ class Forecast(core_models.CoreModel):
     description = models.TextField(
         blank=True, default=_("No extra information for this day."), verbose_name=_("Explicit description for the day")
     )
-    task_id = models.UUIDField(max_length=255, blank=True, default="")
+    task_id = models.UUIDField(
+        max_length=255, blank=True, default="", verbose_name=_("Task id the forecast was retrieved by")
+    )
 
     def __str__(self):
         return f"{self.date} - {self.temperature}°C"

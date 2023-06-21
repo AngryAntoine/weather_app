@@ -12,12 +12,6 @@ from bs4 import Tag
 from weather_app.apps.forecast import models as forecast_models
 
 
-class BaseForecastParserService(ABC):
-    @abstractmethod
-    def get_forecast(self, period: int) -> None:
-        pass
-
-
 @dataclass(kw_only=True, frozen=True)
 class ForecastForDay:
     """
@@ -29,13 +23,25 @@ class ForecastForDay:
     description: str
 
 
+class BaseForecastParserService(ABC):
+    @abstractmethod
+    def get_forecast(self, period: int) -> None:
+        """
+        Retrieves the forecast for the next N days
+        """
+        pass
+
+
 class BSForecastParserService(BaseForecastParserService):
     """
     Beautiful Soup forecast parser service
     """
 
-    def __init__(self, url: str):
+    def __init__(self, url: str, city: str = "Kyiv", region: str = "Kyivskiy", county: str = "Kyivska") -> None:
         self.url = url
+        self.city = city
+        self.region = region
+        self.county = county
 
     def _get_data(self, date: datetime.date) -> Tag | None:
         """
@@ -46,7 +52,7 @@ class BSForecastParserService(BaseForecastParserService):
             " (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
         }
         date_to_str = date.strftime("%Y-%m-%d")
-        url = f"{self.url}/Kyivska/Kyivskiy/Kyiv/{date_to_str}/ajax/"
+        url = f"{self.url}/{self.county}/{self.region}/{self.city}/{date_to_str}/ajax/"
         try:
             response = requests.get(url, headers=headers)
             return BS(response.content, "html.parser").find("div", class_="city__main-inner")
@@ -71,9 +77,9 @@ class BSForecastParserService(BaseForecastParserService):
             res_str.append(line.text.replace(".", "").replace("\n", ""))
         return ", ".join(res_str)
 
-    def get_forecast(self, period: int = 5) -> List[ForecastForDay]:
+    def get_forecast(self, period: int = 6) -> List[ForecastForDay]:
         """
-        Get forecast for the given period, default is 5 days
+        Get forecast for the given period, default is today's date plus 5 next days
         """
         forecasts = []
         for item in range(0, period):
@@ -90,6 +96,9 @@ class BSForecastParserService(BaseForecastParserService):
 
 
 class ForecastService:
+    """
+    Forecast service to deal with Forecast models manipulations
+    """
     @staticmethod
     def update_or_create(*, task_id: UUID, forecasts: List[ForecastForDay]) -> None:
         """
