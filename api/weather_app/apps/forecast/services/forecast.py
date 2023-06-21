@@ -62,14 +62,14 @@ class BSForecastParserService(BaseForecastParserService):
     @staticmethod
     def _get_temperature(*, day: Tag) -> int:
         """
-        Retrieves the temperature for a given day
+        Retrieves the temperature for a given day, removing the unnecessary symbols
         """
         return int(day.find("div", class_="city__main-temp").text.replace("°", "").replace("+", ""))
 
     @staticmethod
     def _get_description(*, day: Tag) -> str:
         """
-        Retrieves the description for a given day
+        Retrieves the description for a given day, removing the unnecessary symbols
         """
         lines = day.find_all("span", class_="city__main-image-descr")
         res_str = []
