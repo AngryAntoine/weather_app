@@ -9,7 +9,7 @@
 
 ### API documentation: ###
 
-* ReDoc web UI: [http://127.0.0.1:8000/_platform/docs/v1/redoc/](http://127.0.0.1:8000/_platform/docs/v1/redoc/)
+* ReDoc web UI: [http://127.0.0.1:8080/_platform/docs/v1/redoc/](http://127.0.0.1:8080/_platform/docs/v1/redoc/)
 
 ### First run: ###
 Application is running in docker containers. 
@@ -29,5 +29,5 @@ Run application with required services:
 make compose-up
 ```
 
-Your application will be available at [http://localhost:8000](http://localhost:8000)
+Your application will be available at [http://localhost:8080](http://localhost:8080)
 

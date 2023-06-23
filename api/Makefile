@@ -29,7 +29,7 @@ check-fix:
 	ruff check --fix-only --show-fixes --statistics .
 
 run:migrate collectstatic
-	python manage.py runserver_plus 0.0.0.0:8000 --nostatic
+	python manage.py runserver_plus 0.0.0.0:8080 --nostatic
 
 celery-worker-run:
 	celery -A weather_app worker
